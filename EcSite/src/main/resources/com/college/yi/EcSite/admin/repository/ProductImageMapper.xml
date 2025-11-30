@@ -4,14 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.college.yi.EcSite.admin.repository.ProductImageMapper">
-  <select id="findByProductIds" resultType="com.college.yi.EcSite.entity.ProductImage" parameterType="list">
-    SELECT * FROM product_images
-    WHERE product_id IN
-    <foreach item="id" collection="list" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </select>
-  
+
+  <select id="findByProductIds" resultType="com.college.yi.EcSite.entity.ProductImage">
+  SELECT *
+  FROM product_images
+  WHERE product_id IN
+  <foreach item="id" collection="productIds" open="(" separator="," close=")">
+    #{id}
+  </foreach>
+  AND is_main = true
+</select>
+
+
+
   <insert id="insert" parameterType="com.college.yi.EcSite.entity.ProductImage" useGeneratedKeys="true" keyProperty="imageId">
   INSERT INTO product_images
     (product_id, image_url, sort_order, is_main, created_at)
@@ -19,9 +24,8 @@
     (#{productId}, #{imageUrl}, #{sortOrder}, #{isMain}, NOW())
 </insert>
 
-<delete id="deleteByProductId" parameterType="long">
+  <delete id="deleteByProductId" parameterType="long">
     DELETE FROM product_images WHERE product_id = #{productId}
-</delete>
-
+  </delete>
 
 </mapper>

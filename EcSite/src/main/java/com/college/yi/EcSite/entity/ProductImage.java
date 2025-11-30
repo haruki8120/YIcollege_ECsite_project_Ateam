@@ -31,6 +31,8 @@ public class ProductImage {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    
+    private Long id;
 
 }
 

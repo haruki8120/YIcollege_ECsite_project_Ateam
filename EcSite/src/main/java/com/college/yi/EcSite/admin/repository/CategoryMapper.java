@@ -11,4 +11,5 @@ import com.college.yi.EcSite.entity.Category;
 public interface CategoryMapper {
     Category findById(@Param("categoryId") Long categoryId);
     List<Category> findByIds(@Param("categoryIds") List<Long> categoryIds);
+    List<Category> findAll();
 }

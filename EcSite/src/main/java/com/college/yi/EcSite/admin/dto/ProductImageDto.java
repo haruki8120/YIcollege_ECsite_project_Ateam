@@ -16,20 +16,26 @@ public class ProductImageDto {
     
     @NonNull
     private Long imageId;
+
     @Size(max = 255)
     private String imageUrl;
+
     private Integer sortOrder;
-    private Boolean isMan;
+    private Boolean isMain;
     private Long productId;
+
+   
+    public boolean isImageMissing() {
+        return (imageUrl == null || imageUrl.isBlank());
+    }
 
     public static ProductImageDto of(ProductImage img) {
         ProductImageDto dto = new ProductImageDto();
         dto.setImageId(img.getImageId());
         dto.setImageUrl(img.getImageUrl());
         dto.setSortOrder(img.getSortOrder());
-        dto.setIsMan(img.getIsMain());
+        dto.setIsMain(img.getIsMain());
         dto.setProductId(img.getProductId());
         return dto;
     }
-
 }

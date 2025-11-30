@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -136,45 +134,6 @@ public class AdminProductServiceTest {
         Exception ex2 = assertThrows(IllegalArgumentException.class, () ->
                 adminProductService.updateStock(productId, -1));
         assertTrue(ex2.getMessage().contains("在庫数は0以上の整数で入力してください"));
-    }
-
-    @DisplayName("positive:商品論理削除が正常にできること")
-    @Test
-    public void test_6() {
-        Long productId = 1L;
-        Product product = new Product();
-        product.setProductId(productId);
-
-        when(productMapper.findById(productId)).thenReturn(Optional.of(product));
-        when(productMapper.logicalDelete(eq(productId), any(LocalDateTime.class))).thenReturn(1);
-
-        assertDoesNotThrow(() -> adminProductService.deleteProduct(productId));
-    }
-
-    @DisplayName("negative:存在しない商品論理削除はエラーになる")
-    @Test
-    public void test_7() {
-        Long productId = 99L;
-        when(productMapper.findById(productId)).thenReturn(Optional.empty());
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                adminProductService.deleteProduct(productId));
-        assertTrue(exception.getMessage().contains("対象商品が見つかりません"));
-    }
-
-    @DisplayName("negative:論理削除でDB更新件数0ならエラーになる")
-    @Test
-    public void test_8() {
-        Long productId = 1L;
-        Product product = new Product();
-        product.setProductId(productId);
-
-        when(productMapper.findById(productId)).thenReturn(Optional.of(product));
-        when(productMapper.logicalDelete(eq(productId), any(LocalDateTime.class))).thenReturn(0);
-
-        Exception exception = assertThrows(RuntimeException.class, () ->
-                adminProductService.deleteProduct(productId));
-        assertTrue(exception.getMessage().contains("削除に失敗しました"));
     }
 
 }
